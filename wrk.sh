@@ -28,12 +28,15 @@ CPUS=$(getconf _NPROCESSORS_ONLN)
 date +"%F %T: Starting wrk: CPUS: ${CPUS}, IPS: ${#IP_ARRAY[*]}"
 date +"%F %T: Target IPS: ${IPS}"
 
-for cpu in $(seq 0 $(( ( $CPUS -1 ) * $CPU_SCALING )) )
+for cpu in $(seq 0 $((  $CPUS -1  )) )
 do
-  target="${IP_ARRAY[$(( $RANDOM % ${#IP_ARRAY[*]} ))]}"
-  date +"%F %T: Launching: taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H \"HOST: ${HOST}\" \"${PROTO}://${target}${URI}\""
-  taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H "HOST: ${HOST}" "${PROTO}://${target}${URI}" &
-  wrks="${wrks} $!"
+  for procs in $(seq 0 $(( $CPU_SCALING -1 )) )
+  do
+    target="${IP_ARRAY[$(( $RANDOM % ${#IP_ARRAY[*]} ))]}"
+    date +"%F %T: Launching: taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H \"HOST: ${HOST}\" \"${PROTO}://${target}${URI}\""
+    taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H "HOST: ${HOST}" "${PROTO}://${target}${URI}" &
+    wrks="${wrks} $!"
+  done
   sleep 1
 done
 
