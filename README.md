@@ -22,3 +22,4 @@ ENV URI="/"
 ENV PROTO="http"
 ```
 
+Download from docker hub: [tuxinvader/wrkit](https://hub.docker.com/r/tuxinvader/wrkit)
