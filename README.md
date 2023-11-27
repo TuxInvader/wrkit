@@ -1,4 +1,4 @@
-# Wrk container to load tests
+# Wrk container for load tests
 
 This container will run a number of `wrk` processes. The exact number is determined by the number of cores in the system
 multiplied by the `CPU_SCALING` factor.
