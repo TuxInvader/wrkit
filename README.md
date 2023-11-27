@@ -22,4 +22,7 @@ ENV URI="/"
 ENV PROTO="http"
 ```
 
+You may also provide a `PORT` parameter if you are running the `PROTO` (http|https) on a non-standard port.
+
 Download from docker hub: [tuxinvader/wrkit](https://hub.docker.com/r/tuxinvader/wrkit)
+

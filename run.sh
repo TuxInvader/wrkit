@@ -9,6 +9,16 @@
 [ -z "${PROTO+x}" ] && PROTO="http"
 [ -z "${URI+x}" ] && URI="/foo"
 
+if [ -z "${PORT+x}" ]
+then
+  if [ "$PROTO" = "http" ]
+  then
+    PORT=80
+  else
+    PORT=443
+  fi
+fi
+
 running=true
 
 _term() { 
@@ -33,8 +43,8 @@ do
   for procs in $(seq 0 $(( $CPU_SCALING -1 )) )
   do
     target="${IP_ARRAY[$(( $RANDOM % ${#IP_ARRAY[*]} ))]}"
-    date +"%F %T: Launching: taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H \"HOST: ${HOST}\" \"${PROTO}://${target}${URI}\""
-    taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H "HOST: ${HOST}" "${PROTO}://${target}${URI}" &
+    date +"%F %T: Launching: taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H \"HOST: ${HOST}\" \"${PROTO}://${target}:${PORT}${URI}\""
+    taskset -c $cpu wrk -c ${CONCURRENT} -t ${THREADS} -d ${DURATION} -H "HOST: ${HOST}" "${PROTO}://${target}:${PORT}${URI}" &
     wrks="${wrks} $!"
   done
   sleep 1

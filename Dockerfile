@@ -13,7 +13,7 @@ WORKDIR "/"
 
 RUN apk add bash wrk util-linux-misc
 
-COPY wrk.sh /wrk.sh
+COPY run.sh /run.sh
 
-ENTRYPOINT ["/wrk.sh"]
+ENTRYPOINT ["/run.sh"]
 
