@@ -89,15 +89,15 @@ done
 sleeps=0
 while [ "$running" == "true" ];
 do
-  sleeps=$(( $sleeps + 1 ))
-  [ "$(( $sleeps % 6 ))" -eq "0" ] && date +"%F %T: Waiting for wrk to be done"
-  sleep 5
-  procs=$(ps -ef | grep wrk | grep -v grep)
-  if [ -z "${procs}" ]
+  procs=$(ps -ef | grep wrk | grep -v grep | wc -l)
+  [ "$(( $sleeps % 6 ))" -eq "0" ] && date +"%F %T: Waiting for $procs wrk processes to complete"
+  if [ "${procs}" -eq 0 ]
   then
     date +"%F %T: All wrk processes have completed."
     running=false
   fi
+  sleep 5
+  sleeps=$(( $sleeps + 1 ))
 done
 
 
