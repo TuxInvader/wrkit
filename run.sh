@@ -1,6 +1,7 @@
 #!/bin/bash
 
 [ -z "${CONCURRENT+x}" ] && CONCURRENT="50"
+[ -z "${CONCURRENT_FIXED+x}" ] && CONCURRENT_FIXED="false"
 [ -z "${THREADS+x}" ] && THREADS="1"
 [ -z "${CPU_SCALING+x}" ] && CPU_SCALING="1"
 [ -z "${CPU_CORES+x}" ] && CPU_CORES="0"
@@ -77,7 +78,12 @@ do
   then
     scaling=$(( $RANDOM % $CPU_SCALING + 1 ))
     threads=$(( $RANDOM % $THREADS + 1 ))
-    concurrent=$(( $RANDOM % $CONCURRENT + $threads ))
+    if [ "$CONCURRENT_FIXED" == "true" ]
+    then
+      concurrent=$CONCURRENT
+    else
+      concurrent=$(( $RANDOM % $CONCURRENT + $threads ))
+    fi
     duration=$(( $RANDOM % $DURATION + $MIN_DURATION ))
     pause=$(( $RANDOM % $PAUSE + 1 ))
     launch "$cpu" "$scaling" "$concurrent" "$threads" "$duration" "$pause"

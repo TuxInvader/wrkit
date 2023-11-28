@@ -40,5 +40,7 @@ with a value between 1 and the current setting.
 If you want the duration to have a minimum then set `MIN_DURATION` to that value, but this will result in 
 a range of: `$MIN_DURATION` to `$DURATION + $MIN_DURATION`
 
+The concurrency is also randomised, if you want a fixed concurrency, then set `CONCURRENT_FIXED=true`
+
 Download from docker hub: [tuxinvader/wrkit](https://hub.docker.com/r/tuxinvader/wrkit)
 
