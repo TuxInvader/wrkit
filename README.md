@@ -17,7 +17,8 @@ Defaults
 ENV CONCURRENT="50"
 ENV THREADS="1"
 ENV CPU_SCALING="1"
-ENV DURATION="1"
+ENV DURATION="60"
+ENV MIN_DURATION="5"
 ENV HOST="www.example.com"
 ENV IPS="127.0.0.1 127.0.1.1"
 ENV URI="/"
@@ -31,6 +32,9 @@ You may also provide a `PORT` parameter if you are running the `PROTO` (http|htt
 ## RANDOMIZE
 If you set `RANDOMIZE=true` then all other values are considered maximums and each wrk process will launch
 with a value between 1 and the current setting.
+
+If you want the duration to have a minimum then set `MIN_DURATION` to that value, but this will result in 
+a range of: `$MIN_DURATION` to `$DURATION + $MIN_DURATION`
 
 Download from docker hub: [tuxinvader/wrkit](https://hub.docker.com/r/tuxinvader/wrkit)
 

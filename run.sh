@@ -1,13 +1,14 @@
 #!/bin/bash
 
-[ -z "${CONCURRENT+x}" ] && CONCURRENT="100"
+[ -z "${CONCURRENT+x}" ] && CONCURRENT="50"
 [ -z "${THREADS+x}" ] && THREADS="1"
 [ -z "${CPU_SCALING+x}" ] && CPU_SCALING="1"
-[ -z "${DURATION+x}" ] && DURATION="30"
+[ -z "${DURATION+x}" ] && DURATION="60"
+[ -z "${MIN_DURATION+x}" ] && MIN_DURATION="1"
 [ -z "${HOST+x}" ] && HOST="www.example.com"
 [ -z "${IPS+x}" ] && IPS="127.0.0.1 127.0.1.1"
 [ -z "${PROTO+x}" ] && PROTO="http"
-[ -z "${URI+x}" ] && URI="/foo"
+[ -z "${URI+x}" ] && URI="/"
 [ -z "${RANDOMIZE+x}" ] && RANDOMIZE="false"
 [ -z "${PAUSE+x}" ] && PAUSE="1"
 
@@ -66,7 +67,7 @@ do
     scaling=$(( $RANDOM % $CPU_SCALING + 1 ))
     threads=$(( $RANDOM % $THREADS + 1 ))
     concurrent=$(( $RANDOM % $CONCURRENT + $threads ))
-    duration=$(( $RANDOM % $DURATION + 1 ))
+    duration=$(( $RANDOM % $DURATION + $MIN_DURATION ))
     pause=$(( $RANDOM % $PAUSE + 1 ))
     launch "$cpu" "$scaling" "$concurrent" "$threads" "$duration" "$pause"
   else
