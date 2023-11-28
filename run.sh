@@ -3,6 +3,7 @@
 [ -z "${CONCURRENT+x}" ] && CONCURRENT="50"
 [ -z "${THREADS+x}" ] && THREADS="1"
 [ -z "${CPU_SCALING+x}" ] && CPU_SCALING="1"
+[ -z "${CPU_CORES+x}" ] && CPU_CORES="0"
 [ -z "${DURATION+x}" ] && DURATION="60"
 [ -z "${MIN_DURATION+x}" ] && MIN_DURATION="1"
 [ -z "${HOST+x}" ] && HOST="www.example.com"
@@ -56,8 +57,18 @@ trap _term SIGTERM
 
 IP_ARRAY=( $IPS )
 CPUS=$(getconf _NPROCESSORS_ONLN)
+CPUS_ACTUAL=$CPUS
 
-date +"%F %T: Starting wrk: CPUS: ${CPUS}, IPS: ${#IP_ARRAY[*]}"
+# limit cores to CPU_CORES if it was set
+if [ "$CPU_CORES" -gt 0 ]
+then
+  if [ "$CPU_CORES" -lt "$CPUS" ]
+  then
+    CPUS="$CPU_CORES"
+  fi
+fi
+
+date +"%F %T: Starting wrk: Available CPUs: ${CPUS_ACTUAL}, Using: ${CPUS}, IPS: ${#IP_ARRAY[*]}"
 date +"%F %T: Target IPS: ${IPS}"
 
 for cpu in $(seq 0 $((  $CPUS -1  )) )

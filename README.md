@@ -1,7 +1,10 @@
 # Wrk container for load tests
 
 This container will run a number of `wrk` processes. The exact number is determined by the number of
-cores in the system multiplied by the `CPU_SCALING` factor.
+cores in the system multiplied by the `CPU_SCALING` factor. 
+
+If you want to use fewer cores, then set `$CPU_CORES` to the number of cores you want to use.
+If `CPU_CORES` is greater than cores in the system or it's set to zero (0) then it will be ignored.
 
 Each process will run `THREADS` threads and create `CONCURRENT` connections to the target,
 and run for `DURATION` (minutes) time.
@@ -17,6 +20,7 @@ Defaults
 ENV CONCURRENT="50"
 ENV THREADS="1"
 ENV CPU_SCALING="1"
+ENV CPU_CORES="0"
 ENV DURATION="60"
 ENV MIN_DURATION="5"
 ENV HOST="www.example.com"
